@@ -1,29 +1,43 @@
-import { ScrollView, Text, StyleSheet } from "react-native";
+import { useState } from "react";
+import { View, ScrollView, Text, StyleSheet, Pressable } from "react-native";
+import { Heading } from "./components";
 
 export const Home = () => {
+  const [count, setCount] = useState(0);
+
+  const onPress = () => {
+    setCount((c) => c + 1);
+  };
+
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={styles.container}
-      style={styles.view}
-    >
-      <Text style={styles.title}>Hello World</Text>
-    </ScrollView>
+    <View style={styles.container}>
+      <ScrollView keyboardShouldPersistTaps="always" style={styles.content}>
+        <Heading />
+        <Pressable
+          style={styles.button}
+          onPress={onPress}
+          android_ripple={{ color: "red" }}
+        >
+          <Text>Home {count}</Text>
+        </Pressable>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
-    padding: 64,
-    backgroundColor: "#fff",
-  },
   container: {
+    backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
   },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    textAlign: "center",
+  content: {
+    flex: 1,
+    padding: 64,
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
   },
 });
