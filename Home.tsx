@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, ScrollView, Text, StyleSheet, Pressable } from "react-native";
 import { Heading } from "./components";
+import { Pokemon } from "./types";
+import { getPokemons } from "./services";
 
 export const Home = () => {
-  const [count, setCount] = useState(0);
+  const [list, setList] = useState<Pokemon[]>([]);
+  useEffect(() => {
+    getPokemons().then(setList);
+  }, []);
 
+  const [count, setCount] = useState(0);
   const onPress = () => {
     setCount((c) => c + 1);
   };
@@ -20,6 +26,9 @@ export const Home = () => {
         >
           <Text>Home {count}</Text>
         </Pressable>
+        {list.map(({ id, name }) => (
+          <Text key={id}>{name}</Text>
+        ))}
       </ScrollView>
     </View>
   );
