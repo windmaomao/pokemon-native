@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { View, ScrollView, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+} from "react-native";
 import { Heading } from "./components";
 import { Pokemon } from "./types";
-import { getPokemons } from "./services";
+import { pokemonSrc, getPokemons } from "./services";
 
 export const Home = () => {
   const [list, setList] = useState<Pokemon[]>([]);
@@ -10,25 +17,26 @@ export const Home = () => {
     getPokemons().then(setList);
   }, []);
 
-  const [count, setCount] = useState(0);
-  const onPress = () => {
-    setCount((c) => c + 1);
-  };
+  const onPress = () => {};
 
   return (
     <View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always" style={styles.content}>
         <Heading />
-        <Pressable
-          style={styles.button}
-          onPress={onPress}
-          android_ripple={{ color: "red" }}
-        >
-          <Text>Home {count}</Text>
-        </Pressable>
-        {list.map(({ id, name }) => (
-          <Text key={id}>{name}</Text>
-        ))}
+        <View style={styles.list}>
+          {list.map(({ id, name }) => (
+            <Pressable
+              style={styles.button}
+              onPress={onPress}
+              android_ripple={{ color: "red" }}
+            >
+              <View key={id} style={styles.item}>
+                <Text>{name}</Text>
+                <Image style={styles.image} source={{ uri: pokemonSrc(id) }} />
+              </View>
+            </Pressable>
+          ))}
+        </View>
       </ScrollView>
     </View>
   );
@@ -42,11 +50,21 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 64,
+    padding: 35,
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
+  button: {},
+  list: {
+    marginTop: 32,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 15,
+  },
+  item: {
     padding: 10,
+  },
+  image: {
+    width: 60,
+    height: 60,
   },
 });

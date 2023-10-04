@@ -6,7 +6,7 @@ const resolveId = (url: string) => {
 };
 
 export const getPokemons = async (): Promise<Pokemon[]> => {
-  return fetch("https://pokeapi.co/api/v2/pokemon?limit=100")
+  return fetch("https://pokeapi.co/api/v2/pokemon?limit=40")
     .then((res) => res.json())
     .then((res) => {
       const items: any[] = res.results;
@@ -15,4 +15,8 @@ export const getPokemons = async (): Promise<Pokemon[]> => {
         name: item.name,
       }));
     });
+};
+
+export const pokemonSrc = (id: string) => {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 };
