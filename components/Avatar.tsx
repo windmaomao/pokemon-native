@@ -26,7 +26,7 @@ export const Avatar = ({ name, uri, on, onPress }: AvatarProps) => {
       android_ripple={{ color: "red" }}
     >
       <Animated.View style={[styles.item, { transform: [{ scale: size }] }]}>
-        <Text>{name}</Text>
+        <Text style={styles.text}>{name}</Text>
         <Image style={styles.image} source={{ uri }} />
       </Animated.View>
     </Pressable>
@@ -34,9 +34,14 @@ export const Avatar = ({ name, uri, on, onPress }: AvatarProps) => {
 };
 
 const styles = StyleSheet.create({
-  button: {},
+  button: {
+    zIndex: 1,
+  },
   item: {
     padding: 10,
+  },
+  text: {
+    textAlign: "center",
   },
   image: {
     width: 60,

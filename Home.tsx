@@ -50,13 +50,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 35,
   },
   list: {
-    marginTop: 32,
+    margin: 32,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    gap: 15,
+    gap: 25,
   },
 });
