@@ -1,14 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  Animated,
-} from "react-native";
-import { Heading } from "./components";
+import { View, ScrollView, StyleSheet, Animated } from "react-native";
+import { Heading, Avatar } from "./components";
 import { Pokemon } from "./types";
 import { pokemonSrc, getPokemons } from "./services";
 
@@ -27,25 +19,22 @@ export const Home = () => {
     getPokemons().then(setList).then(showList);
   }, []);
 
-  const onPress = () => {};
+  const [selected, setSelected] = useState<number>(-1);
+  const onSelect = (id: number) => () => setSelected(id);
 
   return (
     <View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always" style={styles.content}>
         <Heading />
         <Animated.View style={[styles.list, { opacity }]}>
-          {list.map(({ id, name }) => (
-            <Pressable
-              style={styles.button}
-              onPress={onPress}
-              android_ripple={{ color: "red" }}
+          {list.map(({ id, name }, i) => (
+            <Avatar
               key={id}
-            >
-              <View style={styles.item}>
-                <Text>{name}</Text>
-                <Image style={styles.image} source={{ uri: pokemonSrc(id) }} />
-              </View>
-            </Pressable>
+              name={name}
+              uri={pokemonSrc(id)}
+              on={i === selected}
+              onPress={onSelect(i)}
+            />
           ))}
         </Animated.View>
       </ScrollView>
@@ -63,19 +52,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 35,
   },
-  button: {},
   list: {
     marginTop: 32,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 15,
-  },
-  item: {
-    padding: 10,
-  },
-  image: {
-    width: 60,
-    height: 60,
   },
 });
