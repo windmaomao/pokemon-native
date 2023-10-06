@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   View,
   ScrollView,
@@ -6,15 +6,25 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  Animated,
 } from "react-native";
 import { Heading } from "./components";
 import { Pokemon } from "./types";
 import { pokemonSrc, getPokemons } from "./services";
 
 export const Home = () => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const showList = () => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
+
   const [list, setList] = useState<Pokemon[]>([]);
   useEffect(() => {
-    getPokemons().then(setList);
+    getPokemons().then(setList).then(showList);
   }, []);
 
   const onPress = () => {};
@@ -23,20 +33,21 @@ export const Home = () => {
     <View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always" style={styles.content}>
         <Heading />
-        <View style={styles.list}>
+        <Animated.View style={[styles.list, { opacity }]}>
           {list.map(({ id, name }) => (
             <Pressable
               style={styles.button}
               onPress={onPress}
               android_ripple={{ color: "red" }}
+              key={id}
             >
-              <View key={id} style={styles.item}>
+              <View style={styles.item}>
                 <Text>{name}</Text>
                 <Image style={styles.image} source={{ uri: pokemonSrc(id) }} />
               </View>
             </Pressable>
           ))}
-        </View>
+        </Animated.View>
       </ScrollView>
     </View>
   );
