@@ -19,8 +19,7 @@ export const Home = () => {
     getPokemons().then(setList).then(showList);
   }, []);
 
-  const [selected, setSelected] = useState<number>(-1);
-  const onSelect = (id: number) => () => setSelected(id);
+  const onSelect = (id: number) => () => {};
 
   return (
     <View style={styles.container}>
@@ -32,7 +31,6 @@ export const Home = () => {
               key={id}
               name={name}
               uri={pokemonSrc(id)}
-              on={i === selected}
               onPress={onSelect(i)}
             />
           ))}
