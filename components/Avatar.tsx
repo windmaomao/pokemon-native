@@ -1,5 +1,11 @@
-import { useRef } from "react";
-import { Text, StyleSheet, Pressable, View, Animated } from "react-native";
+import { useRef, useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Animated,
+} from "react-native";
 
 interface AvatarProps {
   name: string;
@@ -8,51 +14,52 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
+  const [selected, setSelected] = useState(false);
   const size = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
+    setSelected(true);
     Animated.timing(size, {
-      toValue: 6,
+      toValue: 3,
       duration: 300,
       useNativeDriver: true,
-    }).start();
-  };
-  const onPressOut = () => {
-    Animated.timing(size, {
-      toValue: 2,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-    onPress();
+    }).start(() => {
+      setSelected(false);
+      Animated.timing(size, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    });
   };
 
   return (
-    <Pressable
-      style={styles.button}
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={[styles.button, selected && { backgroundColor: "#eee" }]}
       onPressIn={onPressIn}
-      onPressOut={onPressOut}
     >
-      <View style={styles.item}>
+      <View style={styles.view}>
         <Animated.Image
           style={[styles.image, { transform: [{ scale: size }] }]}
           source={{ uri }}
         />
         <Text style={styles.text}>{name}</Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  button: { padding: 16 },
-  item: {
+  button: { padding: 16, width: "100%" },
+  view: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
   },
-  text: {},
+  text: { paddingLeft: 32, fontSize: 16 },
   image: {
     width: 60,
     height: 60,
