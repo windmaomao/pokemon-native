@@ -6,7 +6,7 @@ const resolveId = (url: string) => {
 };
 
 export const getPokemons = async (): Promise<Pokemon[]> => {
-  return fetch("https://pokeapi.co/api/v2/pokemon?limit=500")
+  return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
     .then((res) => res.json())
     .then((res) => {
       const items: any[] = res.results;

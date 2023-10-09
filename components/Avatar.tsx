@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Text, StyleSheet, Pressable, View, Animated } from "react-native";
 
 interface AvatarProps {
@@ -12,14 +12,14 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
 
   const onPressIn = () => {
     Animated.timing(size, {
-      toValue: 4,
+      toValue: 6,
       duration: 300,
       useNativeDriver: true,
     }).start();
   };
   const onPressOut = () => {
     Animated.timing(size, {
-      toValue: 1,
+      toValue: 2,
       duration: 3000,
       useNativeDriver: true,
     }).start();
@@ -31,27 +31,28 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
       style={styles.button}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
-      hitSlop={30}
     >
       <View style={styles.item}>
-        <Text style={styles.text}>{name}</Text>
         <Animated.Image
           style={[styles.image, { transform: [{ scale: size }] }]}
           source={{ uri }}
         />
+        <Text style={styles.text}>{name}</Text>
       </View>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    zIndex: 1,
+  button: { padding: 16 },
+  item: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 16,
   },
-  item: {},
-  text: {
-    textAlign: "center",
-  },
+  text: {},
   image: {
     width: 60,
     height: 60,

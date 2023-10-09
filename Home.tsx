@@ -1,5 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { View, ScrollView, StyleSheet, Animated } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  FlatList,
+  ListRenderItemInfo,
+} from "react-native";
 import { Heading, Avatar } from "./components";
 import { Pokemon } from "./types";
 import { pokemonSrc, getPokemons } from "./services";
@@ -19,23 +25,22 @@ export const Home = () => {
     getPokemons().then(setList).then(showList);
   }, []);
 
-  const onSelect = (id: number) => () => {};
+  const onSelect = () => () => {};
+
+  const renderItem = ({ item }: ListRenderItemInfo<Pokemon>) => (
+    <Avatar name={item.name} uri={pokemonSrc(item.id)} onPress={onSelect} />
+  );
 
   return (
     <View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="always" style={styles.content}>
-        <Heading />
-        <Animated.View style={[styles.list, { opacity }]}>
-          {list.map(({ id, name }, i) => (
-            <Avatar
-              key={id}
-              name={name}
-              uri={pokemonSrc(id)}
-              onPress={onSelect(i)}
-            />
-          ))}
-        </Animated.View>
-      </ScrollView>
+      <Heading />
+      <Animated.View style={[styles.list, { opacity }]}>
+        <FlatList
+          data={list}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </Animated.View>
     </View>
   );
 };
@@ -50,10 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   list: {
-    margin: 32,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 25,
+    flex: 1,
   },
 });
