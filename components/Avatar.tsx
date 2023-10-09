@@ -19,25 +19,30 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
 
   const onPressIn = () => {
     setSelected(true);
-    Animated.timing(size, {
-      toValue: 3,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setSelected(false);
+    Animated.stagger(700, [
+      Animated.timing(size, {
+        toValue: 3,
+        duration: 300,
+        useNativeDriver: true,
+      }),
       Animated.timing(size, {
         toValue: 1,
         duration: 1000,
         useNativeDriver: true,
-      }).start();
-    });
+      }),
+    ]).start();
+  };
+
+  const onPressOut = () => {
+    setSelected(false);
   };
 
   return (
     <TouchableOpacity
-      activeOpacity={0.5}
-      style={[styles.button, selected && { backgroundColor: "#eee" }]}
+      activeOpacity={0.9}
+      style={[styles.button, selected && { backgroundColor: "#f2f2f2" }]}
       onPressIn={onPressIn}
+      onPressOut={onPressOut}
     >
       <View style={styles.view}>
         <Animated.Image
