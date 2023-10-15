@@ -3,6 +3,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   Animated,
 } from "react-native";
@@ -19,7 +20,7 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
 
   const onPressIn = () => {
     setSelected(true);
-    Animated.stagger(700, [
+    Animated.sequence([
       Animated.timing(size, {
         toValue: 3,
         duration: 300,
@@ -39,16 +40,19 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
 
   return (
     <TouchableOpacity
-      activeOpacity={0.9}
       style={[styles.button, selected && { backgroundColor: "#f2f2f2" }]}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
     >
       <View style={styles.view}>
-        <Animated.Image
-          style={[styles.image, { transform: [{ scale: size }] }]}
-          source={{ uri }}
-        />
+        <TouchableWithoutFeedback
+          hitSlop={10}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+        >
+          <Animated.Image
+            style={[styles.image, { transform: [{ scale: size }] }]}
+            source={{ uri }}
+          />
+        </TouchableWithoutFeedback>
         <Text style={styles.text}>{name}</Text>
       </View>
     </TouchableOpacity>
@@ -56,7 +60,7 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
 };
 
 const styles = StyleSheet.create({
-  button: { padding: 16, width: "100%" },
+  button: { padding: 16, width: "100%", height: 80 },
   view: {
     display: "flex",
     flexDirection: "row",

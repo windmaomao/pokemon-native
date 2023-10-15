@@ -28,7 +28,12 @@ export const Home = () => {
   const onSelect = () => () => {};
 
   const renderItem = ({ item }: ListRenderItemInfo<Pokemon>) => (
-    <Avatar name={item.name} uri={pokemonSrc(item.id)} onPress={onSelect} />
+    <Avatar
+      key={item.name}
+      name={item.name}
+      uri={pokemonSrc(item.id)}
+      onPress={onSelect}
+    />
   );
 
   return (
