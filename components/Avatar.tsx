@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, memo } from "react";
 import {
   Text,
   StyleSheet,
@@ -14,7 +14,7 @@ interface AvatarProps {
   onPress: () => void;
 }
 
-export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
+export const Avatar = memo(({ name, uri, onPress }: AvatarProps) => {
   const [selected, setSelected] = useState(false);
   const size = useRef(new Animated.Value(1)).current;
 
@@ -44,7 +44,7 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
     >
       <View style={styles.view}>
         <TouchableWithoutFeedback
-          hitSlop={10}
+          hitSlop={5}
           onPressIn={onPressIn}
           onPressOut={onPressOut}
         >
@@ -57,7 +57,7 @@ export const Avatar = ({ name, uri, onPress }: AvatarProps) => {
       </View>
     </TouchableOpacity>
   );
-};
+});
 
 const styles = StyleSheet.create({
   button: { padding: 16, width: "100%", height: 80 },

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -27,13 +27,11 @@ export const Home = () => {
 
   const onSelect = () => () => {};
 
-  const renderItem = ({ item }: ListRenderItemInfo<Pokemon>) => (
-    <Avatar
-      key={item.name}
-      name={item.name}
-      uri={pokemonSrc(item.id)}
-      onPress={onSelect}
-    />
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<Pokemon>) => (
+      <Avatar name={item.name} uri={pokemonSrc(item.id)} onPress={onSelect} />
+    ),
+    []
   );
 
   return (
@@ -43,7 +41,8 @@ export const Home = () => {
         <FlatList
           data={list}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.name}
+          initialNumToRender={10}
         />
       </Animated.View>
     </View>
