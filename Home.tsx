@@ -42,7 +42,7 @@ export const Home = () => {
           data={list}
           renderItem={renderItem}
           keyExtractor={(item) => item.name}
-          initialNumToRender={10}
+          numColumns={4}
         />
       </Animated.View>
     </View>
