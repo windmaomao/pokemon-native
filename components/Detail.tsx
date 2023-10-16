@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Modal, View, StyleSheet, Text, Pressable } from "react-native";
+import {
+  Modal,
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  ActivityIndicator,
+  Image,
+} from "react-native";
+import { PokemonDetail } from "../types";
+import { getPokemon, pokemonSrc } from "../services";
 
 interface DetailProps {
   name?: string;
@@ -7,9 +17,13 @@ interface DetailProps {
 
 export const Detail = ({ name }: DetailProps) => {
   const [on, setOn] = useState(false);
+  const [pokemon, setPokemon] = useState<PokemonDetail>();
 
   useEffect(() => {
+    if (!name) return;
+
     setOn(true);
+    getPokemon(name).then(setPokemon);
   }, [name]);
 
   return (
@@ -22,6 +36,18 @@ export const Detail = ({ name }: DetailProps) => {
       <View style={styles.modal}>
         <View style={styles.modalView}>
           <Text>{name}</Text>
+          {!pokemon && <ActivityIndicator />}
+          {pokemon && (
+            <View>
+              <Image
+                style={styles.image}
+                source={{ uri: pokemonSrc(`${pokemon.id}`) }}
+              />
+              <Text>Height: {pokemon.height}</Text>
+              <Text>Weight: {pokemon.weight}</Text>
+              <Text>Base experience: {pokemon.base_experience}</Text>
+            </View>
+          )}
           <Pressable onPress={() => setOn(false)}>
             <Text style={styles.button}>Dismiss</Text>
           </Pressable>
@@ -55,5 +81,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+  },
+  image: {
+    width: 60,
+    height: 60,
   },
 });

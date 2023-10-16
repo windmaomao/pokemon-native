@@ -1,12 +1,14 @@
-import { Pokemon } from "../types/pokemon";
+import { Pokemon, PokemonDetail } from "../types/pokemon";
 
 const resolveId = (url: string) => {
   const parts = url.split("/");
   return parts[parts.length - 2];
 };
 
+const api = "https://pokeapi.co/api/v2";
+
 export const getPokemons = async (): Promise<Pokemon[]> => {
-  return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
+  return fetch(api + "/pokemon?limit=1000")
     .then((res) => res.json())
     .then((res) => {
       const items: any[] = res.results;
@@ -19,4 +21,8 @@ export const getPokemons = async (): Promise<Pokemon[]> => {
 
 export const pokemonSrc = (id: string) => {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+};
+
+export const getPokemon = async (id: string): Promise<PokemonDetail> => {
+  return fetch(api + "/pokemon/" + id).then((res) => res.json());
 };
