@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Heading, Avatar, Detail } from "./components";
 import { Pokemon } from "./types";
-import { pokemonSrc, getPokemons } from "./services";
+import { getPokemons } from "./services";
 
 export const Home = () => {
   const opacity = useRef(new Animated.Value(0)).current;
@@ -25,11 +25,11 @@ export const Home = () => {
     getPokemons().then(setList).then(showList);
   }, []);
 
-  const [selected, setSelected] = useState<string>("");
+  const [selected, setSelected] = useState<number>();
 
   const renderItem = useCallback(
     ({ item: { name, id } }: ListRenderItemInfo<Pokemon>) => (
-      <Avatar name={name} uri={pokemonSrc(id)} onSelect={setSelected} />
+      <Avatar name={name} id={id} onSelect={setSelected} />
     ),
     []
   );
@@ -45,7 +45,7 @@ export const Home = () => {
           numColumns={4}
         />
       </Animated.View>
-      <Detail name={selected} />
+      <Detail id={selected} />
     </View>
   );
 };

@@ -9,22 +9,22 @@ import {
   Image,
 } from "react-native";
 import { PokemonDetail } from "../types";
-import { getPokemon, pokemonSrc } from "../services";
+import { getPokemon, getPokemonImageSrc } from "../services";
 
 interface DetailProps {
-  name?: string;
+  id?: number;
 }
 
-export const Detail = ({ name }: DetailProps) => {
+export const Detail = ({ id }: DetailProps) => {
   const [on, setOn] = useState(false);
   const [pokemon, setPokemon] = useState<PokemonDetail>();
 
   useEffect(() => {
-    if (!name) return;
+    if (!id) return;
 
     setOn(true);
-    getPokemon(name).then(setPokemon);
-  }, [name]);
+    getPokemon(id).then(setPokemon);
+  }, [id]);
 
   return (
     <Modal
@@ -35,22 +35,26 @@ export const Detail = ({ name }: DetailProps) => {
     >
       <View style={styles.modal}>
         <View style={styles.modalView}>
-          <Text>{name}</Text>
           {!pokemon && <ActivityIndicator />}
           {pokemon && (
-            <View>
-              <Image
-                style={styles.image}
-                source={{ uri: pokemonSrc(`${pokemon.id}`) }}
-              />
-              <Text>Height: {pokemon.height}</Text>
-              <Text>Weight: {pokemon.weight}</Text>
-              <Text>Base experience: {pokemon.base_experience}</Text>
+            <View style={styles.view}>
+              <View>
+                <Image
+                  style={styles.image}
+                  source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                />
+                <Pressable onPress={() => setOn(false)}>
+                  <Text style={styles.button}>Dismiss</Text>
+                </Pressable>
+              </View>
+              <View>
+                <Text style={styles.name}>{pokemon.name}</Text>
+                <Text>Height: {pokemon.height}</Text>
+                <Text>Weight: {pokemon.weight}</Text>
+                <Text>Base experience: {pokemon.base_experience}</Text>
+              </View>
             </View>
           )}
-          <Pressable onPress={() => setOn(false)}>
-            <Text style={styles.button}>Dismiss</Text>
-          </Pressable>
         </View>
       </View>
     </Modal>
@@ -63,11 +67,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalView: {
-    margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
     backgroundColor: "#f5f5f5",
     borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -76,6 +80,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    flexDirection: "row",
+  },
+  view: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
   },
   button: {
     borderRadius: 20,
@@ -83,7 +94,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   image: {
-    width: 60,
-    height: 60,
+    width: 120,
+    height: 100,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+    margin: 5,
   },
 });

@@ -7,14 +7,15 @@ import {
   View,
   Animated,
 } from "react-native";
+import { getPokemonImageSrc } from "../services";
 
 interface AvatarProps {
+  id: number;
+  onSelect: (id: number) => void;
   name: string;
-  uri: string;
-  onSelect: (name: string) => void;
 }
 
-export const Avatar = memo(({ name, uri, onSelect }: AvatarProps) => {
+export const Avatar = memo(({ name, id, onSelect }: AvatarProps) => {
   const [selected, setSelected] = useState(false);
   const size = useRef(new Animated.Value(1)).current;
 
@@ -36,7 +37,7 @@ export const Avatar = memo(({ name, uri, onSelect }: AvatarProps) => {
 
   const onPressOut = () => {
     setSelected(false);
-    onSelect(name);
+    onSelect(id);
   };
 
   return (
@@ -48,7 +49,7 @@ export const Avatar = memo(({ name, uri, onSelect }: AvatarProps) => {
         <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
           <Animated.Image
             style={[styles.image, { transform: [{ scale: size }] }]}
-            source={{ uri }}
+            source={{ uri: getPokemonImageSrc(id) }}
           />
         </TouchableWithoutFeedback>
       </View>
