@@ -1,4 +1,4 @@
-import { useRef, useState, memo } from "react";
+import { useRef, useState, memo, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,14 +11,14 @@ import {
 interface AvatarProps {
   name: string;
   uri: string;
-  onPress: () => void;
+  onSelect: (name: string) => void;
 }
 
-export const Avatar = memo(({ name, uri, onPress }: AvatarProps) => {
+export const Avatar = memo(({ name, uri, onSelect }: AvatarProps) => {
   const [selected, setSelected] = useState(false);
   const size = useRef(new Animated.Value(1)).current;
 
-  const onPressIn = () => {
+  const onPressIn = useCallback(() => {
     setSelected(true);
     Animated.sequence([
       Animated.timing(size, {
@@ -32,10 +32,11 @@ export const Avatar = memo(({ name, uri, onPress }: AvatarProps) => {
         useNativeDriver: true,
       }),
     ]).start();
-  };
+  }, [name]);
 
   const onPressOut = () => {
     setSelected(false);
+    onSelect(name);
   };
 
   return (
@@ -43,17 +44,13 @@ export const Avatar = memo(({ name, uri, onPress }: AvatarProps) => {
       style={[styles.button, selected && { backgroundColor: "#f2f2f2" }]}
     >
       <View style={styles.view}>
-        <TouchableWithoutFeedback
-          hitSlop={5}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-        >
+        <Text style={styles.text}>{name}</Text>
+        <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
           <Animated.Image
             style={[styles.image, { transform: [{ scale: size }] }]}
             source={{ uri }}
           />
         </TouchableWithoutFeedback>
-        <Text style={styles.text}>{name}</Text>
       </View>
     </TouchableOpacity>
   );

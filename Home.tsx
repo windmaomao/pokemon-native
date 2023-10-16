@@ -6,7 +6,7 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { Heading, Avatar } from "./components";
+import { Heading, Avatar, Detail } from "./components";
 import { Pokemon } from "./types";
 import { pokemonSrc, getPokemons } from "./services";
 
@@ -25,11 +25,11 @@ export const Home = () => {
     getPokemons().then(setList).then(showList);
   }, []);
 
-  const onSelect = () => () => {};
+  const [selected, setSelected] = useState<string>("");
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Pokemon>) => (
-      <Avatar name={item.name} uri={pokemonSrc(item.id)} onPress={onSelect} />
+    ({ item: { name, id } }: ListRenderItemInfo<Pokemon>) => (
+      <Avatar name={name} uri={pokemonSrc(id)} onSelect={setSelected} />
     ),
     []
   );
@@ -45,6 +45,7 @@ export const Home = () => {
           numColumns={4}
         />
       </Animated.View>
+      <Detail name={selected} />
     </View>
   );
 };
