@@ -39,13 +39,11 @@ export const Detail = ({ id }: DetailProps) => {
             {!pokemon && <ActivityIndicator />}
             {pokemon && (
               <View style={styles.view}>
-                <View>
-                  <Image
-                    style={styles.image}
-                    source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                  />
-                </View>
-                <View>
+                <Image
+                  style={styles.image}
+                  source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                />
+                <View style={styles.content}>
                   <Text style={styles.name}>{pokemon.name}</Text>
                   <Text>Height: {pokemon.height}</Text>
                   <Text>Weight: {pokemon.weight}</Text>
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
   modalView: {
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fefefe",
     borderRadius: 20,
     padding: 15,
     shadowColor: "#000",
@@ -85,19 +83,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     gap: 16,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+  content: {
+    flex: 1,
   },
   image: {
-    width: 120,
+    width: 140,
     height: 100,
+    transform: [{ scale: 1.5 }],
   },
   name: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
     margin: 5,
   },

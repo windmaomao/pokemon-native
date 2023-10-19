@@ -45,7 +45,7 @@ export const Home = () => {
           numColumns={4}
         />
       </Animated.View>
-      <Detail id={selected} />
+      <Detail key={selected} id={selected} />
     </View>
   );
 };
