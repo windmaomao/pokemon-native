@@ -4,9 +4,9 @@ import {
   View,
   StyleSheet,
   Text,
-  Pressable,
   ActivityIndicator,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { PokemonDetail } from "../types";
 import { getPokemon, getPokemonImageSrc } from "../services";
@@ -33,30 +33,29 @@ export const Detail = ({ id }: DetailProps) => {
       hardwareAccelerated={true}
       animationType="slide"
     >
-      <View style={styles.modal}>
-        <View style={styles.modalView}>
-          {!pokemon && <ActivityIndicator />}
-          {pokemon && (
-            <View style={styles.view}>
-              <View>
-                <Image
-                  style={styles.image}
-                  source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                />
-                <Pressable onPress={() => setOn(false)}>
-                  <Text style={styles.button}>Dismiss</Text>
-                </Pressable>
+      <TouchableWithoutFeedback onPress={() => setOn(false)}>
+        <View style={styles.modal}>
+          <View style={styles.modalView}>
+            {!pokemon && <ActivityIndicator />}
+            {pokemon && (
+              <View style={styles.view}>
+                <View>
+                  <Image
+                    style={styles.image}
+                    source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.name}>{pokemon.name}</Text>
+                  <Text>Height: {pokemon.height}</Text>
+                  <Text>Weight: {pokemon.weight}</Text>
+                  <Text>Base experience: {pokemon.base_experience}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={styles.name}>{pokemon.name}</Text>
-                <Text>Height: {pokemon.height}</Text>
-                <Text>Weight: {pokemon.weight}</Text>
-                <Text>Base experience: {pokemon.base_experience}</Text>
-              </View>
-            </View>
-          )}
+            )}
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -67,8 +66,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalView: {
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
     backgroundColor: "#f5f5f5",
     borderRadius: 20,
     padding: 15,
