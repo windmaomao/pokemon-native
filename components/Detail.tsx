@@ -33,27 +33,28 @@ export const Detail = ({ id }: DetailProps) => {
       hardwareAccelerated={true}
       animationType="slide"
     >
-      <TouchableWithoutFeedback onPress={() => setOn(false)}>
-        <View style={styles.modal}>
-          <View style={styles.modalView}>
-            {!pokemon && <ActivityIndicator />}
-            {pokemon && (
-              <View style={styles.view}>
-                <Image
-                  style={styles.image}
-                  source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                />
-                <View style={styles.content}>
-                  <Text style={styles.name}>{pokemon.name}</Text>
-                  <Text>Height: {pokemon.height}</Text>
-                  <Text>Weight: {pokemon.weight}</Text>
-                  <Text>Base experience: {pokemon.base_experience}</Text>
-                </View>
+      <View style={styles.modal}>
+        <TouchableWithoutFeedback onPress={() => setOn(false)}>
+          <View style={styles.dismissView}></View>
+        </TouchableWithoutFeedback>
+        <View style={styles.modalView}>
+          {!pokemon && <ActivityIndicator />}
+          {pokemon && (
+            <View style={styles.view}>
+              <Image
+                style={styles.image}
+                source={{ uri: getPokemonImageSrc(pokemon.id) }}
+              />
+              <View style={styles.content}>
+                <Text style={styles.name}>{pokemon.name}</Text>
+                <Text>Height: {pokemon.height}</Text>
+                <Text>Weight: {pokemon.weight}</Text>
+                <Text>Base experience: {pokemon.base_experience}</Text>
               </View>
-            )}
-          </View>
+            </View>
+          )}
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </Modal>
   );
 };
@@ -62,6 +63,9 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: "flex-end",
+  },
+  dismissView: {
+    flex: 1,
   },
   modalView: {
     marginLeft: 10,
