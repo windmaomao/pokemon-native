@@ -7,7 +7,10 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-export function Pan() {
+interface PanProps {
+  children: React.ReactNode;
+}
+export function Pan({ children }: PanProps) {
   const isPressed = useSharedValue(false);
   const offset = useSharedValue({ x: 0, y: 0 });
 
@@ -18,7 +21,7 @@ export function Pan() {
         { translateY: offset.value.y },
         { scale: withSpring(isPressed.value ? 1.2 : 1) },
       ],
-      backgroundColor: isPressed.value ? "yellow" : "blue",
+      // backgroundColor: isPressed.value ? "yellow" : "blue",
     };
   });
 
@@ -41,16 +44,13 @@ export function Pan() {
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.ball, animatedStyles]} />
+      <Animated.View style={[styles.ball, animatedStyles]}>
+        {children}
+      </Animated.View>
     </GestureDetector>
   );
 }
 
 const styles = StyleSheet.create({
-  ball: {
-    width: 30,
-    height: 30,
-    borderRadius: 30,
-    backgroundColor: "blue",
-  },
+  ball: {},
 });

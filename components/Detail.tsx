@@ -45,12 +45,13 @@ export const Detail = ({ id }: DetailProps) => {
             {pokemon && (
               <View style={styles.view}>
                 <View style={{ flex: 1 }}>
-                  <Pan />
+                  <Pan>
+                    <Image
+                      style={styles.image}
+                      source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                    />
+                  </Pan>
                 </View>
-                <Image
-                  style={styles.image}
-                  source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                />
                 <View style={styles.content}>
                   <Text style={styles.name}>{pokemon.name}</Text>
                   <Text>Height: {pokemon.height}</Text>
@@ -102,9 +103,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    width: 40,
-    height: 10,
-    transform: [{ scale: 1.5 }],
+    width: 140,
+    height: 100,
   },
   name: {
     fontSize: 24,
