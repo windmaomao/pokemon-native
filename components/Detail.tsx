@@ -12,6 +12,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PokemonDetail } from "../types";
 import { getPokemon, getPokemonImageSrc } from "../services";
 import { Pan } from "./Pan";
+import { Gravity } from "./Gravity";
 
 interface DetailProps {
   id?: number;
@@ -33,7 +34,7 @@ export const Detail = ({ id }: DetailProps) => {
       transparent={true}
       visible={on}
       hardwareAccelerated={true}
-      animationType="slide"
+      animationType='slide'
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.modal}>
@@ -45,12 +46,14 @@ export const Detail = ({ id }: DetailProps) => {
             {pokemon && (
               <View style={styles.view}>
                 <View style={{ flex: 1 }}>
-                  <Pan>
-                    <Image
-                      style={styles.image}
-                      source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                    />
-                  </Pan>
+                  <Gravity>
+                    <Pan>
+                      <Image
+                        style={styles.image}
+                        source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                      />
+                    </Pan>
+                  </Gravity>
                 </View>
                 <View style={styles.content}>
                   <Text style={styles.name}>{pokemon.name}</Text>
