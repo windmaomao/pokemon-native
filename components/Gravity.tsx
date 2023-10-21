@@ -4,22 +4,19 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from "react-native-reanimated";
-import { Accelerometer } from "expo-sensors";
+import { Gyroscope } from "expo-sensors";
 
-Accelerometer.setUpdateInterval(20);
+Gyroscope.setUpdateInterval(20);
 
 interface GravityProps {
   children: React.ReactNode;
 }
 export function Gravity({ children }: GravityProps) {
-  const offset = useSharedValue({ x: 0, y: 0 });
+  const tilt = useSharedValue(0);
 
   useEffect(() => {
-    const monitor = Accelerometer.addListener((data) => {
-      offset.value = {
-        x: offset.value.x - data.x * 10,
-        y: offset.value.y,
-      };
+    const monitor = Gyroscope.addListener((data) => {
+      tilt.value = tilt.value - data.y * 10;
     });
 
     return () => {
@@ -32,7 +29,7 @@ export function Gravity({ children }: GravityProps) {
       transform: [
         { perspective: 100 },
         {
-          rotateY: withSpring(`${offset.value.x}deg`),
+          rotateY: withSpring(`${tilt.value}deg`),
         },
       ],
     };
