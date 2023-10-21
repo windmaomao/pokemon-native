@@ -8,8 +8,11 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PokemonDetail } from "../types";
 import { getPokemon, getPokemonImageSrc } from "../services";
+import { Pan } from "./Pan";
+import { Gravity } from "./Gravity";
 
 interface DetailProps {
   id?: number;
@@ -31,21 +34,28 @@ export const Detail = ({ id }: DetailProps) => {
       transparent={true}
       visible={on}
       hardwareAccelerated={true}
-      animationType="slide"
+      animationType='slide'
     >
-      <TouchableWithoutFeedback onPress={() => setOn(false)}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.modal}>
+          <TouchableWithoutFeedback onPress={() => setOn(false)}>
+            <View style={styles.dismissView}></View>
+          </TouchableWithoutFeedback>
           <View style={styles.modalView}>
             {!pokemon && <ActivityIndicator />}
             {pokemon && (
               <View style={styles.view}>
-                <View>
-                  <Image
-                    style={styles.image}
-                    source={{ uri: getPokemonImageSrc(pokemon.id) }}
-                  />
+                <View style={{ flex: 1 }}>
+                  <Gravity>
+                    <Pan>
+                      <Image
+                        style={styles.image}
+                        source={{ uri: getPokemonImageSrc(pokemon.id) }}
+                      />
+                    </Pan>
+                  </Gravity>
                 </View>
-                <View>
+                <View style={styles.content}>
                   <Text style={styles.name}>{pokemon.name}</Text>
                   <Text>Height: {pokemon.height}</Text>
                   <Text>Weight: {pokemon.weight}</Text>
@@ -55,7 +65,7 @@ export const Detail = ({ id }: DetailProps) => {
             )}
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </GestureHandlerRootView>
     </Modal>
   );
 };
@@ -65,12 +75,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
   },
+  dismissView: {
+    flex: 1,
+  },
   modalView: {
+    height: 200,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fefefe",
     borderRadius: 20,
-    padding: 15,
+    padding: 25,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -85,19 +99,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     gap: 16,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+  content: {
+    flex: 1,
   },
   image: {
-    width: 120,
-    height: 100,
+    width: 140,
+    height: 140,
   },
   name: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
     margin: 5,
   },
