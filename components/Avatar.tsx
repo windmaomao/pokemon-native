@@ -23,7 +23,7 @@ export const Avatar = memo(({ name, id, onSelect }: AvatarProps) => {
     setSelected(true);
     Animated.sequence([
       Animated.timing(size, {
-        toValue: 3,
+        toValue: 1.3,
         duration: 300,
         useNativeDriver: true,
       }),

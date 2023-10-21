@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: "#fefefe",
     borderRadius: 20,
-    padding: 15,
+    padding: 25,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 140,
-    height: 100,
+    height: 140,
   },
   name: {
     fontSize: 24,
