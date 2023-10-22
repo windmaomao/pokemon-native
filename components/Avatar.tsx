@@ -46,7 +46,11 @@ export const Avatar = memo(({ name, id, onSelect }: AvatarProps) => {
     >
       <View style={styles.view}>
         <Text style={styles.text}>{name}</Text>
-        <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
+        <TouchableWithoutFeedback
+          delayPressIn={5}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+        >
           <Animated.Image
             style={[styles.image, { transform: [{ scale: size }] }]}
             source={{ uri: getPokemonImageSrc(id) }}

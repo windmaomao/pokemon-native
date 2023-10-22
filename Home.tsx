@@ -43,9 +43,7 @@ export const Home = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.name}
           numColumns={4}
-          onMoveShouldSetResponderCapture={() => {
-            return true;
-          }}
+          onMoveShouldSetResponderCapture={() => true}
         />
       </Animated.View>
       <Detail key={selected} id={selected} />
