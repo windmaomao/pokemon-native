@@ -58,15 +58,14 @@ export const Avatar = memo(({ name, id, onSelect }: AvatarProps) => {
 });
 
 const styles = StyleSheet.create({
-  button: { width: 80, height: 80, flex: 1 },
+  button: { flex: 1, paddingTop: 20 },
   view: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: 16,
   },
-  text: { paddingLeft: 32, fontSize: 9 },
+  text: { fontSize: 10 },
   image: {
     width: 60,
     height: 60,
