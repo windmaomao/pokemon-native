@@ -10,6 +10,12 @@ import { Heading, Avatar, Detail, Search } from "./components";
 import { Pokemon } from "./types";
 import { getPokemons } from "./services";
 
+function filterData(data: Pokemon[], query: string): Pokemon[] {
+  if (!data.length) return [];
+  if (!query) return data;
+  return data.filter((p) => p.name.includes(query));
+}
+
 export const Home = () => {
   const opacity = useRef(new Animated.Value(0)).current;
   const showList = () => {
@@ -20,9 +26,10 @@ export const Home = () => {
     }).start();
   };
 
+  const [data, setData] = useState<Pokemon[]>([]);
   const [list, setList] = useState<Pokemon[]>([]);
   useEffect(() => {
-    getPokemons().then(setList).then(showList);
+    getPokemons().then(setData).then(showList);
   }, []);
 
   const [selected, setSelected] = useState<number>();
@@ -34,10 +41,17 @@ export const Home = () => {
     []
   );
 
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (!data.length) return;
+    setList(filterData(data, search));
+  }, [data, search]);
+
   return (
     <View style={styles.container}>
       <Heading />
-      <Search />
+      <Search onSearch={setSearch} />
       <Animated.View style={[styles.list, { opacity }]}>
         <FlatList
           data={list}

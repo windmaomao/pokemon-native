@@ -17,6 +17,7 @@ export const Search = ({ onSearch }: SearchProps) => {
         onChangeText={onChangeText}
         onEndEditing={onEndEditing}
         placeholder='Search Pokemon'
+        autoCapitalize='none'
         value={text}
       />
     </View>
