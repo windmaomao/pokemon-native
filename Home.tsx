@@ -6,7 +6,7 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { Heading, Avatar, Detail } from "./components";
+import { Heading, Avatar, Detail, Search } from "./components";
 import { Pokemon } from "./types";
 import { getPokemons } from "./services";
 
@@ -37,6 +37,7 @@ export const Home = () => {
   return (
     <View style={styles.container}>
       <Heading />
+      <Search />
       <Animated.View style={[styles.list, { opacity }]}>
         <FlatList
           data={list}
